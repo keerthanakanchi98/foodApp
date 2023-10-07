@@ -8,14 +8,14 @@ import DataTable from "./DataTable";
 const DBUsers = () => {
   const allUsers = useSelector((state) => state.allUsers);
   const dispatch = useDispatch();
-
+  console.log(allUsers);
   useEffect(() => {
     if (!allUsers) {
       getAllUsers().then((data) => {
         dispatch(setAllUserDetails(data));
       });
     }
-  }, []);
+  }, [allUsers]);
 
   return (
     <div className="flex items-center justify-self-center gap-4 pt-6 w-full">

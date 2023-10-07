@@ -3,6 +3,10 @@ module.exports = {
   content: ["./src/**/*.{js,jsx,ts,tsx}"],
   theme: {
     extend: {
+      padding: {
+        "215px": "215px",
+        "80px": "80px",
+      },
       width: {
         150: "150px",
         190: "190px",
@@ -55,6 +59,7 @@ module.exports = {
         cartBg: "#282a2c",
         cartItem: "#2e3033",
         cartTotal: "#343739",
+        homebg: "#d2dadd",
       },
     },
   },

@@ -5,15 +5,20 @@ const express = require("express");
 db.settings({ ignoreUndefinedProperties: true });
 const stripe = require("stripe")(process.env.STRIPE_KEY);
 
-router.post("/create", async (req, res) => {
+router.post("/create/:userId", async (req, res) => {
+  const userId = req.params.userId;
+  console.log("this from create:" + userId);
   try {
     const id = Date.now();
     const data = {
+      creatorID: userId,
       productId: id,
       product_name: req.body.product_name,
       product_category: req.body.product_category,
       product_price: req.body.product_price,
       imageURL: req.body.imageURL,
+      contactInfo: req.body.contactInfo,
+      pickUpAddress: req.body.pickUpAddress,
     };
 
     const response = await db.collection("products").doc(`/${id}/`).set(data);
@@ -49,6 +54,7 @@ router.delete("/delete/:productId", async (req, res) => {
   try {
     await db
       .collection("products")
+      .doc(`/${userId}/`)
       .doc(`/${productId}/`)
       .delete()
       .then((result) => {
@@ -182,59 +188,40 @@ router.get("/getCartItems/:user_id", async (req, res) => {
 });
 
 router.post("/create-checkout-session", async (req, res) => {
-  const customer = await stripe.customers.create({
-    metadata: {
-      user_id: req.body.data.user.user_id,
-      cart: JSON.stringify(req.body.data.cart),
-      total: req.body.data.total,
-    },
-  });
+  for (const item of req.body.data.cart) {
+    for (const p of req.body.data.products) {
+      if (item.productId === p.productId) {
+        const orderId = Date.now();
+        const data = {
+          orderId: orderId,
+          creatorID: req.body.data.user.user_id,
+          productId: p.productId,
+          product_name: p.product_name,
+          product_category: p.product_category,
+          product_price: p.product_price,
+          imageURL: p.imageURL,
+          phone: p.contactInfo,
+          address: p.pickUpAddress,
+        };
 
-  const line_items = req.body.data.cart.map((item) => {
-    return {
-      price_data: {
-        currency: "inr",
-        product_data: {
-          name: item.product_name,
-          images: [item.imageURL],
-          metadata: {
-            id: item.productId,
-          },
-        },
-        unit_amount: item.product_price * 100,
-      },
-      quantity: item.quantity,
-    };
-  });
+        try {
+          const addItems = await db.collection("orders");
+          await db.collection("orders").doc(`/${orderId}/`).set(data);
+        } catch (err) {
+          return res.send({ success: false, msg: `Error :${err}` });
+        }
+      }
+    }
 
-  const session = await stripe.checkout.sessions.create({
-    payment_method_types: ["card"],
-    shipping_address_collection: { allowed_countries: ["IN"] },
-    shipping_options: [
-      {
-        shipping_rate_data: {
-          type: "fixed_amount",
-          fixed_amount: { amount: 0, currency: "inr" },
-          display_name: "Free shipping",
-          delivery_estimate: {
-            minimum: { unit: "hour", value: 2 },
-            maximum: { unit: "hour", value: 4 },
-          },
-        },
-      },
-    ],
-    phone_number_collection: {
-      enabled: true,
-    },
+    await db
+      .collection("cartItems")
+      .doc(`/${req.body.data.user.user_id}/`)
+      .collection("items")
+      .doc(`/${item.productId}/`)
+      .delete();
+  }
 
-    line_items,
-    customer: customer.id,
-    mode: "payment",
-    success_url: `${process.env.CLIENT_URL}/checkout-success`,
-    cancel_url: `${process.env.CLIENT_URL}/`,
-  });
-
-  res.send({ url: session.url });
+  res.send({ url: `${process.env.CLIENT_URL}/checkout-success` });
 });
 
 let endpointSecret;
@@ -332,11 +319,14 @@ router.get("/orders", async (req, res) => {
     try {
       let query = db.collection("orders");
       let response = [];
+
       await query.get().then((querysnap) => {
         let docs = querysnap.docs;
         docs.map((doc) => {
+          console.log("dd", doc);
           response.push({ ...doc.data() });
         });
+        console.log("from prod", response);
         return response;
       });
       return res.status(200).send({ success: true, data: response });

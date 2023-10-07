@@ -7,7 +7,7 @@ import { fadeInOut } from "./animations";
 import { getAllCartItems, validateUserJWTToken } from "./api";
 import { Alert, MainLoader, CheckOutSuccess, UsersOrder } from "./components";
 import { app } from "./config/firebase.config";
-import { Dashboard, Login, Main } from "./containers";
+import { Dashboard, Login, Main, Orders } from "./containers";
 import { setCartItems } from "./context/actions/cartAction";
 import { setUserDetails } from "./context/actions/userActions";
 
@@ -55,6 +55,7 @@ const App = () => {
         <Route path="/dashboard/*" element={<Dashboard />} />
         <Route path="/checkout-success" element={<CheckOutSuccess />} />
         <Route path="/user-orders" element={<UsersOrder />} />
+        <Route path="/orders" element={<Orders />} />
       </Routes>
 
       {alert?.type && <Alert type={alert?.type} message={alert?.message} />}

@@ -16,8 +16,8 @@ const DBHome = () => {
   const fruits = products?.filter((item) => item.product_category === "fruits");
   const rice = products?.filter((item) => item.product_category === "rice");
   const curry = products?.filter((item) => item.product_category === "curry");
-  const chinese = products?.filter(
-    (item) => item.product_category === "chinese"
+  const appetizers = products?.filter(
+    (item) => item.product_category === "appetizers"
   );
   const bread = products?.filter((item) => item.product_category === "bread");
 
@@ -44,7 +44,7 @@ const DBHome = () => {
                   "Rice",
                   "Curry",
                   "Bread",
-                  "Chinese",
+                  "Appetizers",
                 ],
                 datasets: [
                   {
@@ -56,8 +56,8 @@ const DBHome = () => {
                       fruits?.length,
                       rice?.length,
                       curry?.length,
-                      chinese?.length,
                       bread?.length,
+                      appetizers?.length,
                     ],
                   },
                 ],
@@ -66,7 +66,7 @@ const DBHome = () => {
             />
           </div>
         </div>
-        <div className="w-full h-full flex items-center justify-center">
+        {/* <div className="w-full h-full flex items-center justify-center">
           <div className="w-275 md:w-460">
             <CChart
               type="doughnut"
@@ -93,7 +93,7 @@ const DBHome = () => {
               }}
             />
           </div>
-        </div>
+        </div> */}
       </div>
     </div>
   );

@@ -17,6 +17,7 @@ const Cart = () => {
   const dispatch = useDispatch();
   const cart = useSelector((state) => state.cart);
   const user = useSelector((state) => state.user);
+  const products = useSelector((state) => state.products);
   const [total, setTotal] = useState(0);
 
   useEffect(() => {
@@ -34,9 +35,13 @@ const Cart = () => {
       user: user,
       cart: cart,
       total: total,
+      products: products,
     };
+
     axios
-      .post(`${baseURL}/api/products/create-checkout-session`, { data })
+      .post(`${baseURL}/api/products/create-checkout-session/`, {
+        data,
+      })
       .then((res) => {
         if (res.data.url) {
           window.location.href = res.data.url;
@@ -48,7 +53,7 @@ const Cart = () => {
   return (
     <motion.div
       {...slideIn}
-      className="fixed z-50 top-0 right-0 w-300 md:w-508 bg-lightOverlay backdrop-blur-md shadow-md h-screen"
+      className="fixed z-50 top-0 right-0 w-300 md:w-508 bg-lightOverlay backdrop-blur-md shadow-md "
     >
       <div className="w-full flex items-center justify-between py-4 pb-12 px-6">
         <motion.i
@@ -78,7 +83,7 @@ const Cart = () => {
               <div className="w-full flex items-center justify-evenly">
                 <p className="text-3xl text-zinc-500 font-semibold">Total</p>
                 <p className="text-3xl text-orange-500 font-semibold flex items-center justify-center gap-1">
-                  <HiCurrencyRupee className="text-primary" />
+                  <span className="text-primary">$</span>
                   {total}
                 </p>
               </div>
@@ -153,7 +158,7 @@ export const CartItemCard = ({ index, data }) => {
           </span>
         </p>
         <p className="text-sm flex items-center justify-center gap-1 font-semibold text-red-400 ml-auto">
-          <HiCurrencyRupee className="text-red-400" /> {itemTotal}
+          <span className="text-red-400"> $ {itemTotal}</span>
         </p>
       </div>
 

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { LoginBg } from "../assets";
-import { Logo } from "../assets";
+import { LogoSmall } from "../assets";
 import { LoginInput } from "../components";
 import { FaEnvelope, FaLock, FcGoogle } from "../assets/icons";
 import { motion } from "framer-motion";
@@ -119,9 +119,8 @@ const Login = () => {
       {/* content box */}
       <div className="flex flex-col items-center bg-lightOverlay w-[80%] md:w-508 h-full z-10 backdrop-blur-md p-4 px-4 py-12 gap-6">
         {/* Top logo section */}
-        <div className="flex items-center justify-start gap-4 w-full">
-          <img src={Logo} className="w-8" alt="" />
-          <p className="text-headingColor font-semibold text-2xl">City</p>
+        <div className="flex items-center justify-start gap-4">
+          <img src={LogoSmall} className="w-24" alt="" />
         </div>
 
         {/* welcome text */}

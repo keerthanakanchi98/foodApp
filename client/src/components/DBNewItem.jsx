@@ -22,12 +22,16 @@ import { addNewProduct, getAllProducts } from "../api";
 import { setAllProducts } from "../context/actions/productActions";
 
 const DBNewItem = () => {
+  const user = useSelector((state) => state.user);
+
   const [itemName, setItemName] = useState("");
   const [price, setPrice] = useState("");
   const [category, setCategory] = useState(null);
   const [isLoading, setisLoading] = useState(false);
   const [progress, setProgress] = useState(null);
   const [imageDownloadURL, setImageDownloadURL] = useState(null);
+  const [contactInfo, setContactInfo] = useState("");
+  const [pickUpAddress, setPickUpAddress] = useState("");
 
   const alert = useSelector((state) => state.alert);
   const dispatch = useDispatch();
@@ -83,8 +87,10 @@ const DBNewItem = () => {
       product_category: category,
       product_price: price,
       imageURL: imageDownloadURL,
+      contactInfo: contactInfo,
+      pickUpAddress: pickUpAddress,
     };
-    addNewProduct(data).then((res) => {
+    addNewProduct(user?.user_id, data).then((res) => {
       console.log(res);
       dispatch(alertSuccess("New Item added"));
       setTimeout(() => {
@@ -94,6 +100,8 @@ const DBNewItem = () => {
       setItemName("");
       setPrice("");
       setCategory(null);
+      setContactInfo("");
+      setPickUpAddress("");
     });
     getAllProducts().then((data) => {
       dispatch(setAllProducts(data));
@@ -131,6 +139,18 @@ const DBNewItem = () => {
           placeHolder={"Item price here"}
           stateFunc={setPrice}
           stateValue={price}
+        />
+        <InputValueField
+          type="text"
+          placeHolder={"Enter pick up address here"}
+          stateFunc={setPickUpAddress}
+          stateValue={pickUpAddress}
+        />
+        <InputValueField
+          type="text"
+          placeHolder={"Enter Contact Info here"}
+          stateFunc={setContactInfo}
+          stateValue={contactInfo}
         />
 
         <div className="w-full bg-card backdrop-blur-md h-370 rounded-md border-2 border-dotted border-gray-300 cursor-pointer">

@@ -12,6 +12,7 @@ const OrderData = ({ index, data, admin }) => {
   const handleClick = (orderId, sts) => {
     updateOrderSts(orderId, sts).then((response) => {
       getAllOrder().then((data) => {
+        console.log("od", data);
         dispatch(setOrders(data));
       });
     });
@@ -27,22 +28,10 @@ const OrderData = ({ index, data, admin }) => {
 
         <div className=" flex items-center gap-4">
           <p className="flex items-center gap-1 text-textColor">
-            Total : <HiCurrencyRupee className="text-lg text-red-500" />{" "}
-            <span className="text-headingColor font-bold">{data?.total}</span>
-          </p>
-
-          <p className="px-2 py-[2px] text-sm text-headingColor font-semibold capitalize  rounded-md bg-emerald-400 drop-shadow-md">
-            {data?.status}
-          </p>
-
-          <p
-            className={`text-base font-semibold capitalize border border-gray-300 px-2 py-[2px] rounded-md ${
-              (data.sts === "preparing" && "text-orange-500 bg-orange-100") ||
-              (data.sts === "cancelled" && "text-red-500 bg-red-100") ||
-              (data.sts === "delivered" && "text-emerald-500 bg-emerald-100")
-            }`}
-          >
-            {data?.sts}
+            Total : <span className="text-lg text-red-500"> $</span>
+            <span className="text-headingColor font-bold">
+              {data?.product_price}
+            </span>
           </p>
 
           {admin && (
@@ -51,7 +40,6 @@ const OrderData = ({ index, data, admin }) => {
 
               <motion.p
                 {...buttonClcik}
-                onClick={() => handleClick(data.orderId, "preparing")}
                 className={`text-orange-500 text-base font-semibold capitalize border border-gray-300 px-2 py-[2px] rounded-md cursor-pointer`}
               >
                 Preparing
@@ -59,7 +47,6 @@ const OrderData = ({ index, data, admin }) => {
 
               <motion.p
                 {...buttonClcik}
-                onClick={() => handleClick(data.orderId, "cancelled")}
                 className={`text-red-500 text-base font-semibold capitalize border border-gray-300 px-2 py-[2px] rounded-md cursor-pointer`}
               >
                 Cancelled
@@ -67,7 +54,6 @@ const OrderData = ({ index, data, admin }) => {
 
               <motion.p
                 {...buttonClcik}
-                onClick={() => handleClick(data.orderId, "delivered")}
                 className={`text-emerald-500 text-base font-semibold capitalize border border-gray-300 px-2 py-[2px] rounded-md cursor-pointer`}
               >
                 Delivered
@@ -97,12 +83,12 @@ const OrderData = ({ index, data, admin }) => {
                     {item.product_name}
                   </p>
                   <div className="flex items-start gap-2">
-                    <p className="text-sm text-textColor">
+                    {/* <p className="text-sm text-textColor">
                       {" "}
                       Qty : {item.quantity}
-                    </p>
+                    </p> */}
                     <p className="flex items-center gap-1 text-textColor">
-                      <HiCurrencyRupee className="text-base text-red-500" />
+                      <span className="text-base text-red-500"> $</span>
                       {parseFloat(item.product_price).toFixed(2)}
                     </p>
                   </div>
@@ -113,20 +99,14 @@ const OrderData = ({ index, data, admin }) => {
 
         <div className="flex items-start justify-start flex-col gap-2 px-6 ml-auto w-full md:w-460">
           <h1 className="text-lg text-headingColor font-semibold">
-            {data.shipping_details.name}
+            Please collect your order here{" "}
           </h1>
 
-          <p className="text-base text-headingColor -mt-2">
-            {data.customer.email} {data.customer.phone}
-          </p>
+          <p className="text-base text-headingColor -mt-2">Keerthana</p>
 
-          <p className="text-base text-textColor -mt-2">
-            {data.shipping_details.address.line1},
-            {data.shipping_details.address.line2}{" "}
-            {data.shipping_details.address.country},
-            {data.shipping_details.address.state} -
-            {data.shipping_details.address.postal_code}
-          </p>
+          <p className="text-base text-headingColor -mt-2">{data.phone}</p>
+
+          <p className="text-base text-textColor -mt-2">{data.address},</p>
         </div>
       </div>
     </motion.div>

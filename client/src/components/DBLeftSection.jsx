@@ -5,10 +5,9 @@ import { isActiveStyles, isNotActiveStyles } from "../utils/styles";
 
 const DBLeftSection = () => {
   return (
-    <div className="h-full py-12 flex flex-col bg-lightOverlay backdrop-blur-md shadow-md min-w-210 w-300 gap-3">
+    <div className="h-full py-12 flex flex-col bg-lightOverlay bg-homebg backdrop-blur-md shadow-md min-w-210 w-300 gap-3">
       <NavLink to={"/"} className="flex items-center justify-start px-6 gap-4">
-        <img src={Logo} className="w-12" alt="" />
-        <p className="font-semibold text-xl">City</p>
+        <img src={Logo} className="w-96" alt="" />
       </NavLink>
 
       <hr />
@@ -53,16 +52,6 @@ const DBLeftSection = () => {
           }
         >
           Add New Item
-        </NavLink>
-        <NavLink
-          to={"/dashboard/users"}
-          className={({ isActive }) =>
-            isActive
-              ? `${isActiveStyles} px-4 py-2 border-l-8  border-red-500`
-              : isNotActiveStyles
-          }
-        >
-          Users
         </NavLink>
       </ul>
     </div>

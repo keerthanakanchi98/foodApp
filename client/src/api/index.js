@@ -15,9 +15,11 @@ export const validateUserJWTToken = async (token) => {
 };
 
 // add new product
-export const addNewProduct = async (data) => {
+export const addNewProduct = async (userId, data) => {
   try {
-    const res = await axios.post(`${baseURL}/api/products/create`, { ...data });
+    const res = await axios.post(`${baseURL}/api/products/create/${userId}`, {
+      ...data,
+    });
     return res.data.data;
   } catch (err) {
     return null;
@@ -49,6 +51,7 @@ export const deleteAProduct = async (productId) => {
 export const getAllUsers = async () => {
   try {
     const res = await axios.get(`${baseURL}/api/users/all`);
+    console.log(res.data.data);
     return res.data.data;
   } catch (err) {
     return null;

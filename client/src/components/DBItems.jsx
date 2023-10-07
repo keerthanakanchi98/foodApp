@@ -1,14 +1,19 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteAProduct, getAllProducts } from "../api";
-import { HiCurrencyRupee } from "../assets/icons";
 import { DataTable } from "../components";
 import { alertNULL, alertSuccess } from "../context/actions/alertActions";
 import { setAllProducts } from "../context/actions/productActions";
 
 const DBItems = () => {
+  const user = useSelector((state) => state.user);
   const products = useSelector((state) => state.products);
   const dispatch = useDispatch();
+  const specificProduct = products?.filter(
+    (item) => item.creatorID === user?.user_id
+  ); // this has the specific data of the suer logged in
+
+  console.log(products);
   return (
     <div className="flex items-center justify-self-center gap-4 pt-6 w-full">
       <DataTable
@@ -36,13 +41,13 @@ const DBItems = () => {
             field: "product_price",
             render: (rowData) => (
               <p className="text-xl font-semibold text-textColor flex items-center justify-center ">
-                <HiCurrencyRupee className="text-red-400" />
+                <span className="text-red-400">$</span>{" "}
                 {parseFloat(rowData.product_price).toFixed(2)}
               </p>
             ),
           },
         ]}
-        data={products}
+        data={specificProduct}
         title="List of Products"
         actions={[
           {

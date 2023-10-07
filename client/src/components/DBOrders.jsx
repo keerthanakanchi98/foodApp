@@ -11,6 +11,7 @@ const DBOrders = () => {
   useEffect(() => {
     if (!orders) {
       getAllOrder().then((data) => {
+        console.log("orderdata", data);
         dispatch(setOrders(data));
       });
     }

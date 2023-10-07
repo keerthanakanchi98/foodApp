@@ -15,7 +15,7 @@ const CheckoutSuccess = () => {
         <img src={Bill} className="w-full md:w-656" alt="" />
 
         <h1 className="text-[50px] text-headingColor font-bold">
-          Amount paid Successfully
+          Please check Orders for information about the order
         </h1>
 
         <motion.div {...buttonClcik}>
